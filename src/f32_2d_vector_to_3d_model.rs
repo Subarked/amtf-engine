@@ -70,6 +70,37 @@ impl F322DVectorTo3DModel {
     }
 }
 
+/*
+globals.models.push(Model::new(
+        &Vec::new(),
+        &Vec::new(),
+        "./shaders/2dVectorModel/shader.vert",
+        "./shaders/2dVectorModel/shader.frag",
+        "2d vector model".to_owned(),
+    ));
+    let length = globals.models.len();
+    globals.models[length - 1].render_shadows = false;
+
+let mut f32_2d_vector_to_3d_model: F322DVectorTo3DModel =
+        F322DVectorTo3DModel::new(globals.models.len() - 1, 40, 40, 0.5);
+
+    for i in 0..f32_2d_vector_to_3d_model.values.len() {
+        for j in 0..f32_2d_vector_to_3d_model.values[i].len() {
+            f32_2d_vector_to_3d_model.values[i][j] =
+                ((i as f32 * f32_2d_vector_to_3d_model.scale) / 5.0 * f32::consts::PI)
+                    .sin()
+                    .abs()
+                    / 2.0
+                    + ((j as f32 * f32_2d_vector_to_3d_model.scale) / 5.0 * f32::consts::PI)
+                        .sin()
+                        .abs()
+                        / 2.0;
+        }
+    }
+
+    f32_2d_vector_to_3d_model.create_geometry(&mut globals.models);
+ */
+
 #[cfg(test)]
 mod tests {
     use super::*;
