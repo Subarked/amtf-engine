@@ -1,4 +1,4 @@
-use cgmath::{Euler, Quaternion, Rad, Vector2, Vector3};
+use cgmath::{Vector2, Vector3};
 use egui_sdl2_gl::{egui, painter::Painter, DpiScaling, EguiStateHandler, ShaderVersion};
 
 use crate::{
