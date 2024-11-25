@@ -451,7 +451,7 @@ impl Model {
         model.diffuse_texture = texture;
 
         model.start();
-        
+
         return model;
     }
 }
@@ -895,7 +895,8 @@ impl Widget for &mut PointLight {
     }
 }
 
-pub struct Portal {
+/// WIP NOT WORKING
+/*pub struct Portal {
     pub model_index: usize,
     pub connected_portal_index: usize,
 
@@ -974,4 +975,4 @@ impl Portal {
         draw_scene(globals, self.portal_projection, self.portal_view);
         self.portal_framebuffer.unbind();
     }
-}
+} */
