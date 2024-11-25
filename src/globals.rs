@@ -50,17 +50,7 @@ impl Globals {
 
         let cam = Camera::new(WIDTH as f32 / HEIGHT as f32, fovy, 0.1, 100.);
 
-        let mut models: Vec<Model> = Vec::new();
-
-        let cube_model = Model::from_obj_file("./models/Cube.obj".to_owned());
-        models.push(cube_model);
-        let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());
-        plane_model.position = Vector3::new(0., -1.0, 0.);
-        models.push(plane_model);
-        let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());
-        plane_model.position = Vector3::new(10., 9.0, 0.);
-        plane_model.rotation = Quaternion::from(Euler::new(Rad(90.0f32.to_radians()), Rad(0.0f32.to_radians()), Rad(90.0f32.to_radians())));
-        models.push(plane_model);
+        let models: Vec<Model> = Vec::new();
 
         let mut light_model = Model::from_obj_file("./models/Cube.obj".to_owned());
         light_model.shader_program = create_program(

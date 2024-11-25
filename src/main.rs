@@ -13,7 +13,7 @@ use core::f32;
 use egui_sdl2_gl::egui;
 use egui_sdl2_gl::egui::FullOutput;
 use globals::Globals;
-use models::{DirectionalLight, PointLight, SpotLight};
+use models::{DirectionalLight, Model, PointLight, SpotLight};
 use sdl2::event::Event;
 use sdl2::keyboard::{Keycode, Scancode};
 use shaders::{create_program, Program};
@@ -70,6 +70,20 @@ pub fn main() {
     spot_lights[0].direction = (Vector3::zero() - spot_lights[0].position).normalize();
 
     let mut point_lights: Vec<PointLight> = Vec::new();
+
+    let cube_model = Model::from_obj_file("./models/Cube.obj".to_owned());
+    globals.models.push(cube_model);
+    let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());
+    plane_model.position = Vector3::new(0., -1.0, 0.);
+    globals.models.push(plane_model);
+    let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());
+    plane_model.position = Vector3::new(10., 9.0, 0.);
+    plane_model.rotation = Quaternion::from(cgmath::Euler::new(
+        Rad(90.0f32.to_radians()),
+        Rad(0.0f32.to_radians()),
+        Rad(90.0f32.to_radians()),
+    ));
+    globals.models.push(plane_model);
 
     ////UNUSED CODE
     /*
