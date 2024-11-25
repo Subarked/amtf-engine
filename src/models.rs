@@ -450,6 +450,8 @@ impl Model {
         );
         model.diffuse_texture = texture;
 
+        model.start();
+        
         return model;
     }
 }

@@ -6,11 +6,15 @@ use crate::{
     shaders::create_program,
     winsdl::WinSdl,
 };
-
+/// A bunch of variables that most things need to some extent
 pub struct Globals {
+    /// basic sld2 things
     pub win_sdl: WinSdl,
+    /// egui context, gui context
     pub egui_ctx: egui::Context,
+    /// egui painter, it basically puts the gui on screen
     pub egui_painter: Painter,
+    /// egui state, the state of the gui
     pub egui_state: EguiStateHandler,
     pub movement_speed: f32,
     pub look_sensitivity: f32,
@@ -18,10 +22,12 @@ pub struct Globals {
     pub should_grab_mouse: bool,
     pub cam: Camera,
     pub models: Vec<Model>,
+    /// a model that is a quad that will cover the entire screen
     pub screen_model: Model,
+    /// a model that will be rendered where lights are
     pub light_model: Model,
 }
-
+///Window Width and height, should probably be variables to new, but I'm commenting rn
 const WIDTH: usize = 1920;
 const HEIGHT: usize = 1052;
 impl Globals {
@@ -47,14 +53,11 @@ impl Globals {
         let mut models: Vec<Model> = Vec::new();
 
         let cube_model = Model::from_obj_file("./models/Cube.obj".to_owned());
-        cube_model.start();
         models.push(cube_model);
         let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());
-        plane_model.start();
         plane_model.position = Vector3::new(0., -1.0, 0.);
         models.push(plane_model);
-        let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());
-        plane_model.start();
+        let mut plane_model = Model::from_obj_file("./models/Plane.obj".to_owned());;
         plane_model.position = Vector3::new(10., 9.0, 0.);
         plane_model.rotation = Quaternion::from(Euler::new(Rad(90.0f32.to_radians()), Rad(0.0f32.to_radians()), Rad(90.0f32.to_radians())));
         models.push(plane_model);
@@ -65,7 +68,6 @@ impl Globals {
             "./shaders/LightSource/shader.frag",
         )
         .unwrap();
-        light_model.start();
         light_model.position = Vector3::new(2.4, 2.0, 4.0);
         light_model.scale = Vector3::new(0.2, 0.2, 0.2);
 

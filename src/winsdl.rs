@@ -23,7 +23,7 @@ impl WinSdl {
         gl_attr.set_framebuffer_srgb_compatible(true);
 
         let window = video_subsystem
-            .window("opengl demo", width as u32, height as u32)
+            .window("AMTF Engine", width as u32, height as u32)
             .opengl()
             .resizable()
             .position_centered()

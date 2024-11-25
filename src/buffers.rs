@@ -15,6 +15,8 @@ impl VertexBuffer {
                 data.as_ptr() as *const gl::types::GLvoid,
                 gl::DYNAMIC_DRAW,
             );
+
+            ////unused code
             /*let pointer = data.as_ptr() as *mut gl::types::GLvoid;
             println!("{:?}", pointer);
             for i in 0..data.len() {
@@ -321,6 +323,7 @@ impl ModelTexture for Texture {
 }
 
 #[derive(Debug, Clone)]
+///this is not used, and not very tested, sorry
 pub struct Cubemap {
     pub id: u32,
 }
@@ -339,6 +342,8 @@ impl Drop for Cubemap {
         self.delete();
     }
 }
+
+
 impl Cubemap {
     pub fn bind(&self) {
         unsafe { gl::BindTexture(gl::TEXTURE_CUBE_MAP, self.id) }
@@ -352,56 +357,57 @@ impl Cubemap {
             gl::DeleteTextures(1, [self.id].as_ptr());
         }
     }
-    //pub fn load(&self, path: &Path) -> Result<(), ImageError> {
-    //    self.bind();
-    //    unsafe {
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::REPEAT as i32);
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::REPEAT as i32);
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR as i32);
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR as i32);
-    //    }
-    //    let img: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> =
-    //        image::open(path)?.flipv().into_rgba8();
-    //    unsafe {
-    //        gl::TexImage2D(
-    //            gl::TEXTURE_2D,
-    //            0,
-    //            gl::RGBA as i32,
-    //            img.width() as i32,
-    //            img.height() as i32,
-    //            0,
-    //            gl::RGBA,
-    //            gl::UNSIGNED_BYTE,
-    //            img.as_bytes().as_ptr() as *const _,
-    //        );
-    //        gl::GenerateMipmap(gl::TEXTURE_2D);
-    //    }
-    //    Ok(())
-    //}
-    //pub fn make_empty(&self, size: (u32, u32)) -> Result<(), ImageError> {
-    //    self.bind();
-    //    unsafe {
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::REPEAT as i32);
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::REPEAT as i32);
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR as i32);
-    //        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR as i32);
-    //    }
-    //    unsafe {
-    //        gl::TexImage2D(
-    //            gl::TEXTURE_2D,
-    //            0,
-    //            gl::RGBA as i32,
-    //            size.0 as i32,
-    //            size.1 as i32,
-    //            0,
-    //            gl::RGBA,
-    //            gl::UNSIGNED_BYTE,
-    //            null(),
-    //        );
-    //        gl::GenerateMipmap(gl::TEXTURE_2D);
-    //    }
-    //    Ok(())
-    //}
+    ////unused code
+    /*pub fn load(&self, path: &Path) -> Result<(), ImageError> {
+        self.bind();
+        unsafe {
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::REPEAT as i32);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::REPEAT as i32);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR as i32);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR as i32);
+        }
+        let img: image::ImageBuffer<image::Rgba<u8>, Vec<u8>> =
+            image::open(path)?.flipv().into_rgba8();
+        unsafe {
+            gl::TexImage2D(
+                gl::TEXTURE_2D,
+                0,
+                gl::RGBA as i32,
+                img.width() as i32,
+                img.height() as i32,
+                0,
+                gl::RGBA,
+                gl::UNSIGNED_BYTE,
+                img.as_bytes().as_ptr() as *const _,
+            );
+            gl::GenerateMipmap(gl::TEXTURE_2D);
+        }
+        Ok(())
+    }
+    pub fn make_empty(&self, size: (u32, u32)) -> Result<(), ImageError> {
+        self.bind();
+        unsafe {
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::REPEAT as i32);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::REPEAT as i32);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::LINEAR as i32);
+            gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::LINEAR as i32);
+        }
+        unsafe {
+            gl::TexImage2D(
+                gl::TEXTURE_2D,
+                0,
+                gl::RGBA as i32,
+                size.0 as i32,
+                size.1 as i32,
+                0,
+                gl::RGBA,
+                gl::UNSIGNED_BYTE,
+                null(),
+            );
+            gl::GenerateMipmap(gl::TEXTURE_2D);
+        }
+        Ok(())
+    } */
     pub fn make_empty_depth_buffer(&self, size: (u32, u32)) -> Result<(), ImageError> {
         self.bind();
         for i in 0..6 {
@@ -524,7 +530,7 @@ impl ModelTexture for FrameBuffer {
         self.bind();
     }
 }
-
+/// RenderBuffers exist to hold depth buffers when you don't assign them to textures
 pub struct RenderBuffer {
     pub id: u32,
 }

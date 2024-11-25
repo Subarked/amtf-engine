@@ -3,7 +3,6 @@ mod material_structs;
 mod models;
 mod shaders;
 mod winsdl;
-
 mod globals;
 
 use buffers::{Cubemap, FrameBuffer, ModelTexture, RenderBuffer, Texture};
@@ -23,18 +22,20 @@ use std::time::Instant;
 
 pub fn main() {
     let mut globals = Globals::new();
-    let mut start_size = globals.win_sdl.window.size();
+    let mut window_start_size = globals.win_sdl.window.size();
 
     unsafe {
-        gl::Viewport(0, 0, start_size.0 as i32, start_size.1 as i32);
+        gl::Viewport(0, 0, window_start_size.0 as i32, window_start_size.1 as i32);
     }
-
+    //// depth only shader
     let depth_only_shader = create_program(
         "./shaders/BasicModelDepthOnly/shader.vert",
         "./shaders/BasicModelDepthOnly/shader.frag",
     )
     .unwrap();
 
+
+    ////deferred passes shader programs
     let point_lighting_pass = create_program(
         "./shaders/PointLightingPass/shader.vert",
         "./shaders/PointLightingPass/shader.frag",
@@ -52,9 +53,10 @@ pub fn main() {
     .unwrap();
     let final_pass = globals.screen_model.shader_program.clone();
 
+    ////lighting pass gbuffer
     let (g_position, g_normal, g_albedo_spec, gbuffer, g_render_buffer) =
-        create_gbuffer(start_size);
-    let (light_texture, light_buffer) = create_framebuffer(start_size);
+        create_gbuffer(window_start_size);
+    let (light_texture, light_buffer) = create_framebuffer(window_start_size);
 
     let mut directional_lights: Vec<DirectionalLight> = Vec::new();
     directional_lights.push(DirectionalLight::new((4096, 4096)));
@@ -87,11 +89,9 @@ pub fn main() {
     portal_2_model.shader_program = portal_shader_program;
     portal_2_model.render_shadows = false;
     globals.models.push(portal_1_model);
-    globals.models.last().unwrap().start();
     let portal_1 = Portal::new(globals.models.len()-1, portals.len()+1, &mut globals);
     portals.push(portal_1);
     globals.models.push(portal_2_model);
-    globals.models.last().unwrap().start();
     let portal_2 = Portal::new(globals.models.len()-1, portals.len()-1, &mut globals);
     portals.push(portal_2);
 
@@ -110,7 +110,7 @@ pub fn main() {
             .egui_ctx
             .begin_frame(globals.egui_state.input.take());
 
-        if start_size != size {
+        if window_start_size != size {
             remake_gbuffer(
                 &gbuffer,
                 &g_position,
@@ -121,7 +121,7 @@ pub fn main() {
             );
 
             remake_framebuffer(&light_buffer, &light_texture, size);
-            start_size = size;
+            window_start_size = size;
         }
 
         for event in globals.win_sdl.event_pump.poll_iter() {
@@ -200,6 +200,8 @@ pub fn main() {
             spot_light.render(&mut globals, &depth_only_shader);
         }
 
+
+        ////UNUSED CODE, am still figuring out how to implement portals
         //for i in 0..portals.len() {
         //    let portal = portals.get(i).unwrap();
         //    portal.render(&mut globals, &mut portals[portal.connected_portal_index], 0, 5, i);
@@ -267,6 +269,8 @@ pub fn main() {
         }
 
         light_buffer.unbind();
+
+        ////draw final pass
         unsafe {
             gl::Disable(gl::BLEND);
         }
@@ -310,12 +314,7 @@ pub fn draw_scene(
         gl::Enable(gl::CULL_FACE);
     }
 
-    //globals.light_model.position = directional_light.position;
-    //globals.light_model.start_render();
-    //globals.light_model.render(
-    //    globals.cam.view_transform().invert().unwrap(),
-    //    globals.cam.projection_matrix.into(),
-    //);
+
     for model in &mut globals.models {
         let screen_size: Vector2<f32> = Vector2::new(globals.win_sdl.window.size().0 as f32,globals.win_sdl.window.size().1 as f32);
         if model.render_shadows {
@@ -350,10 +349,6 @@ pub fn draw_scene_shadows(
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     }
 
-    //globals.light_model.start_render();
-    //globals
-    //    .light_model
-    //    .render_fullbright(view_matrix, projection_matrix);
     for model in &mut globals.models {
         unsafe {
             gl::CullFace(gl::FRONT);
@@ -382,10 +377,7 @@ pub fn draw_scene_custom_shader_program(
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     }
 
-    //globals.light_model.start_render();
-    //globals
-    //    .light_model
-    //    .render_fullbright(view_matrix, projection_matrix);
+
     for model in &mut globals.models {
         if (is_render_shadows && model.render_shadows) || !is_render_shadows {
             unsafe {
