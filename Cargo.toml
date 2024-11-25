@@ -1,0 +1,22 @@
+[package]
+name = "amtf-engine"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+cgmath = "0.18.0"
+egui_sdl2_gl = "0.28.0"
+gl = "0.14.0"
+image = "0.25.4"
+imgui = "0.12.0"
+imgui-sdl2-support = "0.13.0"
+sdl2 = "0.37.0"
+tobj = "4.0.2"
+
+[package.metadata.vcpkg]
+dependencies = ["sdl2"]
+git = "https://github.com/microsoft/vcpkg"
+rev = "2024.05.24" # release 2024.05.24 # to check for a new one, check https://github.com/microsoft/vcpkg/releases
+
+[package.metadata.vcpkg.target]
+x86_64-pc-windows-msvc = { triplet = "x64-windows-static-md" }
