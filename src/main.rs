@@ -71,8 +71,14 @@ pub fn main() {
 
     let mut point_lights: Vec<PointLight> = Vec::new();
 
+    ////UNUSED CODE
+    /*
     //point_lights.push(PointLight::new());
     //point_lights[0].position = Vector3::new(0., 2., 0.);
+    */
+    
+    ////UNUSED CODE
+    /*
 
     let mut portals: Vec<Portal> = Vec::new();
 
@@ -93,7 +99,7 @@ pub fn main() {
     portals.push(portal_1);
     globals.models.push(portal_2_model);
     let portal_2 = Portal::new(globals.models.len()-1, portals.len()-1, &mut globals);
-    portals.push(portal_2);
+    portals.push(portal_2); */
 
     let start_time = Instant::now();
     let mut deltatime: f32 = 0.0;
