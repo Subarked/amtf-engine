@@ -1,9 +1,9 @@
 mod buffers;
+mod globals;
 mod material_structs;
 mod models;
 mod shaders;
 mod winsdl;
-mod globals;
 
 use buffers::{Cubemap, FrameBuffer, ModelTexture, RenderBuffer, Texture};
 use cgmath::{
@@ -33,7 +33,6 @@ pub fn main() {
         "./shaders/BasicModelDepthOnly/shader.frag",
     )
     .unwrap();
-
 
     ////deferred passes shader programs
     let point_lighting_pass = create_program(
@@ -89,8 +88,8 @@ pub fn main() {
     /*
     //point_lights.push(PointLight::new());
     //point_lights[0].position = Vector3::new(0., 2., 0.);
-    */
-    
+     */
+
     ////UNUSED CODE
     /*
 
@@ -104,7 +103,7 @@ pub fn main() {
 
     let portal_shader_program: Program = create_program("./shaders/Portal/shader.vert", "./shaders/Portal/shader.frag").unwrap();
     let mut portal_2_model = Model::from_obj_file("./models/Portal.obj".to_owned());
-    
+
     portal_2_model.position = Vector3::new(0., 0., -2.);
     portal_2_model.shader_program = portal_shader_program;
     portal_2_model.render_shadows = false;
@@ -220,7 +219,6 @@ pub fn main() {
             spot_light.render(&mut globals, &depth_only_shader);
         }
 
-
         ////UNUSED CODE, am still figuring out how to implement portals
         //for i in 0..portals.len() {
         //    let portal = portals.get(i).unwrap();
@@ -334,15 +332,17 @@ pub fn draw_scene(
         gl::Enable(gl::CULL_FACE);
     }
 
-
     for model in &mut globals.models {
-        let screen_size: Vector2<f32> = Vector2::new(globals.win_sdl.window.size().0 as f32,globals.win_sdl.window.size().1 as f32);
+        let screen_size: Vector2<f32> = Vector2::new(
+            globals.win_sdl.window.size().0 as f32,
+            globals.win_sdl.window.size().1 as f32,
+        );
         if model.render_shadows {
             unsafe {
                 gl::CullFace(gl::BACK);
             }
             model.start_render();
-            
+
             model.render(screen_size, view_matrix, projection_matrix);
         } else {
             unsafe {
@@ -351,7 +351,6 @@ pub fn draw_scene(
             model.start_render();
             model.render_fullbright(screen_size, view_matrix, projection_matrix);
         }
-        
     }
 }
 
@@ -397,21 +396,23 @@ pub fn draw_scene_custom_shader_program(
         gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
     }
 
-
     for model in &mut globals.models {
         if (is_render_shadows && model.render_shadows) || !is_render_shadows {
             unsafe {
                 gl::CullFace(gl::FRONT);
             }
             model.start_render_custom_shader_program(shader_program);
-            model.shader_program.set_float("uSize.x", globals.win_sdl.window.size().0 as f32);
-            model.shader_program.set_float("uSize.y", globals.win_sdl.window.size().1 as f32);
+            model
+                .shader_program
+                .set_float("uSize.x", globals.win_sdl.window.size().0 as f32);
+            model
+                .shader_program
+                .set_float("uSize.y", globals.win_sdl.window.size().1 as f32);
             model.render_custom_shader_program(view_matrix, projection_matrix, shader_program);
             unsafe {
                 gl::CullFace(gl::CULL_FACE);
             }
         }
-        
     }
 }
 
@@ -446,7 +447,8 @@ pub fn draw_point_lighting_pass(
     globals.screen_model.ibo.bind();
     shader_program.set_point_light_info("light", point_light.info, point_light.position);
 
-    globals.screen_model.render_fullbright(Vector2::zero(),
+    globals.screen_model.render_fullbright(
+        Vector2::zero(),
         globals.cam.view_transform().invert().unwrap(),
         globals.cam.projection_matrix.into(),
     );
@@ -495,7 +497,8 @@ pub fn draw_directional_lighting_pass(
     );
     shader_program.set_vector3("light.Color", directional_light.info.color);
 
-    globals.screen_model.render_fullbright(Vector2::zero(),
+    globals.screen_model.render_fullbright(
+        Vector2::zero(),
         globals.cam.view_transform().invert().unwrap(),
         globals.cam.projection_matrix.into(),
     );
@@ -546,7 +549,8 @@ pub fn draw_spot_lighting_pass(
     shader_program.set_float("light.Radius", spot_light.info.radius);
     shader_program.set_float("light.Fov", spot_light.horizontal_fov);
 
-    globals.screen_model.render_fullbright(Vector2::zero(),
+    globals.screen_model.render_fullbright(
+        Vector2::zero(),
         globals.cam.view_transform().invert().unwrap(),
         globals.cam.projection_matrix.into(),
     );
@@ -594,7 +598,8 @@ pub fn draw_final_pass(
 
     globals.screen_model.vao.bind();
     globals.screen_model.ibo.bind();
-    globals.screen_model.render_fullbright(Vector2::zero(),
+    globals.screen_model.render_fullbright(
+        Vector2::zero(),
         globals.cam.view_transform().invert().unwrap(),
         globals.cam.projection_matrix.into(),
     );
@@ -613,7 +618,8 @@ pub fn draw_scene_light_points(
     for point_light in point_lights {
         globals.light_model.position = point_light.position;
         globals.light_model.start_render();
-        globals.light_model.render_fullbright(Vector2::zero(),
+        globals.light_model.render_fullbright(
+            Vector2::zero(),
             globals.cam.view_transform().invert().unwrap(),
             globals.cam.projection_matrix.into(),
         );
@@ -622,7 +628,8 @@ pub fn draw_scene_light_points(
         globals.light_model.position = spot_light.position;
         globals.light_model.rotation = Quaternion::look_at(spot_light.direction, Vector3::unit_y());
         globals.light_model.start_render();
-        globals.light_model.render_fullbright(Vector2::zero(),
+        globals.light_model.render_fullbright(
+            Vector2::zero(),
             globals.cam.view_transform().invert().unwrap(),
             globals.cam.projection_matrix.into(),
         );
