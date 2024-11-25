@@ -8,8 +8,7 @@ use cgmath::{
 use egui_sdl2_gl::egui::{self, DragValue, Widget};
 
 use crate::{
-    buffers::{FrameBuffer, IndexBuffer, ModelTexture, Texture, VertexArrayBuffer, VertexBuffer},
-    create_framebuffer, create_framebuffer_depthbuffer, draw_scene,
+    buffers::{FrameBuffer, IndexBuffer, ModelTexture, Texture, VertexArrayBuffer, VertexBuffer}, create_framebuffer_depthbuffer,
     draw_scene_custom_shader_program,
     globals::Globals,
     material_structs::{DirectionalLightInfo, MaterialInfo, PointLightInfo, SpotLightInfo},

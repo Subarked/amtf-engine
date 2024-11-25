@@ -13,7 +13,7 @@ use core::f32;
 use egui_sdl2_gl::egui;
 use egui_sdl2_gl::egui::FullOutput;
 use globals::Globals;
-use models::{DirectionalLight, Model, PointLight, Portal, SpotLight};
+use models::{DirectionalLight, PointLight, SpotLight};
 use sdl2::event::Event;
 use sdl2::keyboard::{Keycode, Scancode};
 use shaders::{create_program, Program};
